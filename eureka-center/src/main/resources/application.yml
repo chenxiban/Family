@@ -1,0 +1,68 @@
+server:
+  #项目端口号
+  port: 8888
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  #path: D:\Logback-Test\             #日志输出到指定文件夹下默认名为spring.log
+  file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
+  #level: debug   #指定级别
+  level:         #指定输出某个类的日志
+    com.cnooc.wordimg.LoggerTest2: debug
+
+spring:
+  application:
+    name: eureka-server
+  # 设置查看注册中心的登录用户以及他的角色
+  security:
+    user:
+      name: admin
+      password: 867647213
+      roles: ROLEALL
+  # 注册到Admin管理中心
+  boot:
+    admin:
+      client:
+        url: http://localhost:6010
+
+# Admin 管理配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  #eureka实例定义
+  instance:
+    #eureka实例主机名称
+    hostname: master
+    #表示eureka client发送心跳给server端的频率。如果在leaseExpirationDurationInSeconds后，server端没有收到client的心跳，
+    #则将摘除该instance。
+    #除此之外，如果该instance实现了HealthCheckCallback，并决定让自己unavailable的话，则该instance也不会接收到流量。
+    lease-renewal-interval-in-seconds: 5
+  #客户端进行Eureka注册的配置
+  client:
+    #关闭eureka的客户端行为:注册服务
+    registerWithEureka: false
+    #关闭eureka的客户端行为:订阅服务
+    fetchRegistry: false
+    serviceUrl:
+      #eureka注册中心地址
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      #defaultZone: http://backup:8889/eureka/,http://slave:8890/eureka/
+  server:
+    # 关闭自我保护机制，防止失效的服务也被一直访问 (Spring Cloud默认该配置是 true)
+    enable-self-preservation: false
+    # 每隔10s扫描服务列表，该配置可以修改检查失效服务的时间，每隔10s检查失效服务，并移除列表 (Spring Cloud默认该配置是 60s)
+    eviction-interval-timer-in-ms: 5000
+
