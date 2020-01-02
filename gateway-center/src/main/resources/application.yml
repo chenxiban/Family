@@ -40,22 +40,39 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true # 设置可以路由到其他服务
+          #开启从注册中心动态创建路由的功能
+          enabled: true
+          #使用小写服务名，默认是大写
+          lower-case-service-id: true
       routes:
         # 路由的ID
         - id: path_route
           # uri 代表路由的目标地址。注意：uri地址后面不要加 " / "
           # 消息必须使用http进行转发，lb代表从注册中心获取服务
-          uri: lb://<gateway-center> # 可以直接跳转到具体的地址，如果要跳转到其他服务，则填写lb://<服务id>
+          uri: lb://gateway-center # 可以直接跳转到具体的地址，如果要跳转到其他服务，则填写lb://<服务id>
           predicates:
             - Path=/gateway/** # 路由规则
           filters:
             - StripPrefix=1 # 不填则无法路由到其他服务
-            - AddRequestHeader=X-Request-Foo, Bar
+            - Pre # 自定义过滤器
+            - Post # 自定义过滤器
+            # - AddRequestHeader=X-Request-Foo, Bar
             - name: Hystrix # 添加熔断
               args:
                 name: fallbackcmd
-                fallbackUri: forward:/test/fallback # 熔断跳转地址
+                fallbackUri: forward:/fallbacks # 熔断跳转地址
+            #- name: RequestRateLimiter
+                #args:
+                  # 每秒允许处理的请求数量
+                  #redis-rate-limiter.replenishRate: 1 #  令牌桶每秒填充平均速率
+                  # 每秒最大处理的请求数量
+                  #redis-rate-limiter.burstCapacity: 3 # 令牌桶总容量
+                  # 限流策略，对应策略的Bean
+                  #key-resolver: "#{@ipKeyResolver}"
+  #redis:
+    #host: 127.0.0.1
+      #port: root
+      #password: 123456
 
 hystrix:
   metrics:
