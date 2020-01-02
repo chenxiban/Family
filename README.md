@@ -17,15 +17,16 @@
 - **admin-center**
 - **config-center**
 - **gateway-center**
-- ****
-- ****
-- ****
+- **resource-center**
 
 -----------------------
 ### 子项目职责
 
-
-
+- **eureka-center** 服务注册与发现
+- **admin-center** 监控管理--日志等
+- **config-center** 配置中心
+- **gateway-center** 网关路由
+- **resource-center** 文件资源中心
 
 ---------------------------
 ## 最后

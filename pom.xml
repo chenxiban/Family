@@ -51,6 +51,7 @@
         <module>gateway-center</module>
         <module>admin-center</module>
         <module>config-center</module>
+        <module>resource-center</module>
     </modules>
 
 </project>

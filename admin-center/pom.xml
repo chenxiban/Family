@@ -38,6 +38,12 @@
             <version>2.2.1</version>
         </dependency>
 
+        <!-- 权限控制依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!-- SpringCloud 所有子项目 版本集中管理.MS:统一所有SpringCloud依赖项目的版本 依赖 -->

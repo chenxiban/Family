@@ -37,6 +37,11 @@ spring:
   application:
     #服务名称,随便写
     name: admin-center
+  security:
+    user:
+      # 配置用户名和密码
+      name: admin
+      password: admin
 
 hystrix:
   metrics:

@@ -5,7 +5,7 @@ eureka:
     # 告知服务端10秒还未收到心跳的话，就将该服务移除列表
     lease-expiration-duration-in-seconds: 10
     # 健康检查路径
-    health-check-url-path: /actuator/health
+    # health-check-url-path: /actuator/health
   client:
     registry-fetch-interval-seconds: 5 # 默认为30秒
     serviceUrl:
@@ -36,18 +36,34 @@ spring:
   application:
     #服务名称,随便写
     name: config-center
+  config:
+    name: config-center
   cloud:
     config:
       server:
         git:
           # 配置存储配置信息的Git仓库
-          uri: https://gitee.com/JourWon/springcloud-config.git
+          uri: https://github.com/chenxiban/SpringCloud-Config.git
           # github账户名
-          username: chen867647213@163.com
+          username: chenxiban
           # github密码
           password: w867647213
           # 开启启动时直接从git获取配置
           clone-on-start: true
+          # 配置 git 存储器
+          default-label: master
+          # 指定配置环境所在路径
+          # search-paths: /doc/config
           # 获取子目录下的配置
   #          search-paths: '{application}'
+  security:
+    user:
+      # 配置用户名和密码
+      name: root
+      password: 123456
+
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 2000
 

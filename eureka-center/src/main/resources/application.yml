@@ -24,7 +24,7 @@ spring:
     user:
       name: admin
       password: 867647213
-      roles: ROLEALL
+      # roles: ROLEALL
   # 注册到Admin管理中心
   boot:
     admin:
