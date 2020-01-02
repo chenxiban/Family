@@ -1,0 +1,84 @@
+eureka:
+  instance:
+    # 每隔5s发送一次心跳
+    lease-renewal-interval-in-seconds: 5
+    # 告知服务端10秒还未收到心跳的话，就将该服务移除列表
+    lease-expiration-duration-in-seconds: 10
+    # 健康检查路径
+    # health-check-url-path: /actuator/health
+  client:
+    registry-fetch-interval-seconds: 5 # 默认为30秒
+    serviceUrl:
+      #eureka注册中心地址
+      defaultZone: http://localhost:8888/eureka/
+      #defaultZone: http://localhost:8888/eureka/,http://localhost:8889/eureka/,http://localhost:8890/eureka/
+
+# Admin 管理配置
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开启了 'refresh' 端点
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  #项目端口号
+  port: 4010
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    #服务名称,随便写
+    name: resource-center
+  profiles:
+    active: master
+  cloud:
+    # config客户端配置
+    config:
+      # 分支名称
+      label: master
+      # 启用配置后缀名称
+      profile: dev
+      # 配置文件名称
+      name: config
+      # 配置中心地址（子项目地址）
+      uri: http://localhost:9010
+      # 用于向配置中心进行安全认证，需要和配置中心的安全认证账户密码一致
+      username: root
+      password: 123456
+
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 2000
+
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  #path: D:\Logback-Test\             #日志输出到指定文件夹下默认名为spring.log
+  file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
+  #level: debug   #指定级别
+  level:         #指定输出某个类的日志
+    com.cnooc.wordimg.LoggerTest2: debug
+
+#security:
+#  oauth2:
+#    resource:
+#      ####从认证授权中心上验证token
+#      tokenInfoUri: http://localhost:3010/serve-oauth/oauth/check_token
+#      preferTokenInfo: true
+#    client:
+#      accessTokenUri: http://localhost:3010/serve-oauth/oauth/token
+#      userAuthorizationUri: http://localhost:3010/serve-oauth/oauth/authorize
+#      clientId: client_1
+#      clientSecret: 123456
+
+
