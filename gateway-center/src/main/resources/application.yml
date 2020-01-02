@@ -18,7 +18,6 @@ management:
   endpoints:
     web:
       exposure:
-        # 开启了 'refresh' 端点
         include: '*'
   endpoint:
     health:
@@ -26,7 +25,7 @@ management:
 
 server:
   #项目端口号
-  port: 4010
+  port: 5010
   tomcat:
     max-connections: 200
     max-threads: 300
@@ -36,28 +35,32 @@ server:
 spring:
   application:
     #服务名称,随便写
-    name: resource-center
-  profiles:
-    active: master
+    name: gateway-center
   cloud:
-    # config客户端配置
-    config:
-      # 分支名称
-      label: master
-      # 启用配置后缀名称
-      profile: dev
-      # 配置文件名称
-      name: config
-      # 配置中心地址（子项目地址）
-      uri: http://localhost:9010
-      # 用于向配置中心进行安全认证，需要和配置中心的安全认证账户密码一致
-      username: root
-      password: 123456
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 设置可以路由到其他服务
+      routes:
+        # 路由的ID
+        - id: path_route
+          # uri 代表路由的目标地址。注意：uri地址后面不要加 " / "
+          # 消息必须使用http进行转发，lb代表从注册中心获取服务
+          uri: lb://<gateway-center> # 可以直接跳转到具体的地址，如果要跳转到其他服务，则填写lb://<服务id>
+          predicates:
+            - Path=/gateway/** # 路由规则
+          filters:
+            - StripPrefix=1 # 不填则无法路由到其他服务
+            - AddRequestHeader=X-Request-Foo, Bar
+            - name: Hystrix # 添加熔断
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/test/fallback # 熔断跳转地址
 
 hystrix:
   metrics:
     enabled: true
-    polling-interval-ms: 2000
+    polling-interval-ms: 3000
 
 
 logging:

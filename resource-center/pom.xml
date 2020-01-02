@@ -28,7 +28,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-
         <!-- 注册中心依赖 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

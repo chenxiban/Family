@@ -10,15 +10,16 @@
     <groupId>com.cyj</groupId>
     <artifactId>gateway-center</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>gateway-center</name>
-    <description>Demo project for Spring Boot</description>
+    <description>CYJ：Spring Cloud GateWay 网关路由服务中心</description>
 
     <dependencies>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -48,17 +49,18 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- 配置限流使用 -->
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- 权限控制Spring-Oauth2.0的认证模式依赖暂时不用,由于一些注解和API从spring security5.0中移除，所以需要导入下面的依赖包 -->
         <!-- spring-cloud-starter-oauth2 -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
