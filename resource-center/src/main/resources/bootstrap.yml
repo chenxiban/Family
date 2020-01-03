@@ -62,7 +62,26 @@ spring:
     port: 5672
     username: admin
     password: admin
-
+  #集中解决各种编码问题
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
+  #     spring mvc 视图解析器
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  # 时间格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 时区设置
+    time-zone: GMT+8
 
 hystrix:
   metrics:

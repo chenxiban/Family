@@ -8,21 +8,38 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.cyj</groupId>
-    <artifactId>rabbitmq-center</artifactId>
+    <artifactId>oauth-center</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>rabbitmq-center</name>
-    <description>CYJ：Spring Cloud RabbitMQ 消息队列服务中心</description>
+    <name>oauth-center</name>
+    <description>CYJ：Spring Cloud Oauth 权限认证单点登录中心</description>
 
     <dependencies>
-
-        <!-- RabbitMQ 消息总线依赖 -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- 注册中心客户端依赖 -->
+        <!-- Spring Boot JPA 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- 引入Druid依赖 -->
+        <dependency>
+            <!--自动配置-->
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
+        <!-- 引入mysql链接依赖 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -32,19 +49,38 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.2.1</version>
         </dependency>
 
+        <!-- 权限控制Spring-Oauth2.0的认证模式依赖暂时不用,由于一些注解和API从spring security5.0中移除，所以需要导入下面的依赖包 -->
+        <!-- spring-cloud-starter-oauth2 -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13-rc-1</version>
-            <scope>test</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <!-- 权限控制依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- 健康检查 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!-- 引入AOP -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- 引入redis依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
     </dependencies>
@@ -72,7 +108,7 @@
             </plugin>
         </plugins>
         <!-- SpringBoot项目打包jar名称 -->
-        <finalName>rabbitmq-center</finalName>
+        <finalName>oauth-center</finalName>
     </build>
 
     <!-- SpringCloud 官方远程仓库.MS:部分本地仓库和镜像仓库没有SpringCloud子项目依赖。 -->

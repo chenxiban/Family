@@ -1,0 +1,150 @@
+eureka:
+  instance:
+    # 每隔5s发送一次心跳
+    lease-renewal-interval-in-seconds: 5
+    # 告知服务端10秒还未收到心跳的话，就将该服务移除列表
+    lease-expiration-duration-in-seconds: 10
+    # 健康检查路径
+    health-check-url-path: /actuator/health
+  client:
+    registry-fetch-interval-seconds: 5 # 默认为30秒
+    serviceUrl:
+      #eureka注册中心地址
+      defaultZone: http://localhost:8888/eureka/
+      #defaultZone: http://localhost:8888/eureka/,http://localhost:8889/eureka/,http://localhost:8890/eureka/
+
+server:
+  #项目端口号
+  port: 3012
+  servlet:
+    session:
+      cookie:
+        # 防止cookie冲突，冲突会导致登录验证不通过
+        name: OAUTH2-CLIENT-SESSIONID
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    #服务名称,随便写
+    name: family-admin
+  datasource:
+    #数据库意思是:机构权限文件
+    url: jdbc:mysql://121.199.78.252:3306/familys?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: 867647wW!
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #初始化大小
+      initialSize: 10
+      #最小值
+      minIdle: 5
+      #最大值
+      maxActive: 20
+      #最大等待时间，配置获取连接等待超时，时间单位都是毫秒ms
+      maxWait: 60000
+      #配置间隔多久才进行一次检测，检测需要关闭的空闲连接
+      timeBetweenEvictionRunsMillis: 60000
+      #配置一个连接在池中最小生存的时间
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙，SpringBoot中没有slf4j，我改成了slf4j
+      filters: stat,wall,slf4j
+      #最大PSCache连接
+      maxPoolPreparedStatementPerConnectionSize: 20
+      max-evictable-idle-time-millis: 900000
+      useGlobalDataSourceStat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 配置StatFilter
+      web-stat-filter:
+        #默认为false，设置为true启动
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        #配置StatViewServlet
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        #允许那些ip
+        allow: 127.0.0.1
+        login-username: admin
+        login-password: 123456
+        #禁止那些ip
+        deny: 192.168.1.102
+        #是否可以重置
+        reset-enable: true
+        #启用
+        enabled: true
+  # SpringDateJpa 配置自动建表：updata:没有表新建，有表更新操作,控制台显示建表语句
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect  #不加这句则默认为myisam引擎
+    ##运行时输出jpa执行的sql语句
+    show-sql: true
+    ## spring-boot-starter-data-jpa自动映射创建表动作 配置: 有表更新,无表创建
+    hibernate:
+      ddl-auto: update
+  #集中解决各种编码问题
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
+  #     spring mvc 视图解析器
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  # 时间格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 时区设置
+    time-zone: GMT+8
+
+# Admin 管理配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 2000
+
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  #path: D:\Logback-Test\             #日志输出到指定文件夹下默认名为spring.log
+  file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
+  #level: debug   #指定级别
+  level:         #指定输出某个类的日志
+    com.cnooc.wordimg.LoggerTest2: debug
+
+security:
+  oauth2:
+    resource:
+      ####从认证授权中心上验证token
+      tokenInfoUri: http://localhost:3011/serve-oauth/oauth/check_token
+      preferTokenInfo: true
+    client:
+      accessTokenUri: http://localhost:3011/serve-oauth/oauth/token
+      userAuthorizationUri: http://localhost:3011/serve-oauth/oauth/authorize
+      clientId: client_1
+      clientSecret: 123456

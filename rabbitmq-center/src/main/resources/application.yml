@@ -51,7 +51,26 @@ spring:
         max-concurrency: 15
         # 每个消费者每次监听时可拉取处理的消息数量
         prefetch: 5
-
+  #集中解决各种编码问题
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
+  #     spring mvc 视图解析器
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  # 时间格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 时区设置
+    time-zone: GMT+8
 
 hystrix:
   metrics:
