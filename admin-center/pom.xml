@@ -25,12 +25,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- SpringCloud Hystrix 微服务容错监控组件:断路器,依赖隔离,服务降级,服务监控 依赖 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-
         <!--Admin-Server 2.2.1 版本支持中文展示 -->
         <dependency>
             <groupId>de.codecentric</groupId>

@@ -51,8 +51,18 @@ spring:
       # 配置中心地址（子项目地址）
       uri: http://localhost:9010
       # 用于向配置中心进行安全认证，需要和配置中心的安全认证账户密码一致
-      username: root
-      password: 123456
+      #username: config
+      #password: config
+      discovery:
+        enabled: true
+        service-id: config-center
+  # rabbitmq配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
 
 hystrix:
   metrics:
@@ -81,4 +91,10 @@ logging:
 #      clientId: client_1
 #      clientSecret: 123456
 
-
+turbine:
+  # 指定需要收集信息的服务名称
+  app-config: hystrix-service
+  # 指定服务所属集群
+  cluster-name-expression: new String('default')
+  # 以主机名和端口号区分服务
+  combine-host-port: true

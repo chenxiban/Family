@@ -23,12 +23,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
 
-        <!-- SpringCloud Hystrix 微服务容错监控组件:断路器,依赖隔离,服务降级,服务监控 依赖 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-
         <!-- 权限控制依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

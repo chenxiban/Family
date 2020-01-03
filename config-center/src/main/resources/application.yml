@@ -5,7 +5,7 @@ eureka:
     # 告知服务端10秒还未收到心跳的话，就将该服务移除列表
     lease-expiration-duration-in-seconds: 10
     # 健康检查路径
-    health-check-url-path: /actuator/health
+    #health-check-url-path: /actuator/health
   client:
     registry-fetch-interval-seconds: 5 # 默认为30秒
     serviceUrl:
@@ -13,12 +13,12 @@ eureka:
       defaultZone: http://localhost:8888/eureka/
       #defaultZone: http://localhost:8888/eureka/,http://localhost:8889/eureka/,http://localhost:8890/eureka/
 
-# Admin 管理配置
+# Admin 管理配置，暴露bus刷新配置的端点
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: 'bus-refresh'
   endpoint:
     health:
       show-details: always
@@ -35,8 +35,6 @@ server:
 spring:
   application:
     #服务名称,随便写
-    name: config-center
-  config:
     name: config-center
   cloud:
     config:
@@ -56,11 +54,13 @@ spring:
           # search-paths: /doc/config
           # 获取子目录下的配置
   #          search-paths: '{application}'
-  security:
-    user:
-      # 配置用户名和密码
-      name: root
-      password: 123456
+  # rabbitmq配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
 
 hystrix:
   metrics:

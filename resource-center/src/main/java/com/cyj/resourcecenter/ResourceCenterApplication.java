@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.turbine.EnableTurbine;
 
 /**
  * @author ChenYongJia
@@ -13,14 +15,16 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @Email chen87647213@163.com
  */
 @Slf4j
+@EnableTurbine
+@EnableHystrixDashboard
 @EnableEurekaClient
 @SpringBootApplication
 public class ResourceCenterApplication {
 
     public static void main(String[] args) {
-        log.info("=======》启动服务注册中心 Resource-center 资源中心项目ing......");
+        log.info("=======》启动服务 Resource-center 资源中心项目ing......");
         SpringApplication.run(ResourceCenterApplication.class, args);
-        log.info("=======》启动服务注册中心 Resource-center 资源中心项目ing......");
+        log.info("=======》启动服务 Resource-center 资源中心项目成功......");
     }
 
 }

@@ -23,7 +23,20 @@
     </properties>
 
     <dependencies>
-        <!-- 当前依赖需要 IDEA 安装 lombok 插件配合使用 -->
+
+        <!-- 统一引入 可用于刷新配置信息 健康检查 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- 统一引入 SpringCloud Hystrix 微服务容错监控组件:断路器,依赖隔离,服务降级,服务监控 依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
+        <!-- 统一引入 当前依赖需要 IDEA 安装 lombok 插件配合使用 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -31,7 +44,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 引入单元测试 -->
+        <!-- 统一引入 引入单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -44,6 +57,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 引入hutool 帮助类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <modules>
@@ -52,6 +72,8 @@
         <module>admin-center</module>
         <module>config-center</module>
         <module>resource-center</module>
+        <module>hystrix-service</module>
+        <module>rabbitmq-center</module>
     </modules>
 
 </project>
