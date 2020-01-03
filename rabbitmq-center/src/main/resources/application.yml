@@ -1,0 +1,60 @@
+
+eureka:
+  instance:
+    # 每隔5s发送一次心跳
+    lease-renewal-interval-in-seconds: 5
+    # 告知服务端10秒还未收到心跳的话，就将该服务移除列表
+    lease-expiration-duration-in-seconds: 10
+    # 健康检查路径
+    health-check-url-path: /actuator/health
+  client:
+    registry-fetch-interval-seconds: 5 # 默认为30秒
+    serviceUrl:
+      #eureka注册中心地址
+      defaultZone: http://localhost:8888/eureka/
+      #defaultZone: http://localhost:8888/eureka/,http://localhost:8889/eureka/,http://localhost:8890/eureka/
+
+# Admin 管理配置，暴露bus刷新配置的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  #项目端口号
+  port: 1010
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    #服务名称,随便写
+    name: rabbitmq-center
+  # rabbitmq配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      simple:
+        # 并发消费者的初始化值
+        concurrency: 10
+        # 并发消费者的最大值
+        max-concurrency: 15
+        # 每个消费者每次监听时可拉取处理的消息数量
+        prefetch: 5
+
+
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 2000
+
