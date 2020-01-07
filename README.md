@@ -30,6 +30,8 @@
 
 按顺序启动
 - **eureka-center**
+- **consul-center**
+- **consul-config-client**
 - **admin-center**
 - **config-center**
 - **gateway-center**
@@ -52,6 +54,8 @@
     |-- oauth-center                 单点登录
     |-- rabbitmq-center              消息队列
     |-- family-admin                 家庭生态圈管理系统
+    |-- consul-center                一个consul服务玩玩
+    |-- consul-config-client         consul配置中心
     |-- 后续还会加入项目
 ```
 
@@ -74,6 +78,6 @@ Vue（cdn） | 使用cdn形式来编写Vue页面
 ---------------------------
 ### <h2 id="6">致谢</h2>
 
-- **更多参考精彩博文请看这里：[陈永佳的博客](https://blog.csdn.net/Mrs_chens)**
+- **更多参考精彩博文请看这里：[Spring Cloud Hoxton版本项目搭建--陈永佳](https://blog.csdn.net/mrs_chens/category_9632982.html)**
 
 - **喜欢博主的小伙伴可以加个关注、点个赞哦，持续更新嘿嘿！**
