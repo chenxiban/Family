@@ -1,0 +1,56 @@
+server:
+  #项目端口号
+  port: 8890
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  #path: D:\Logback-Test\             #日志输出到指定文件夹下默认名为spring.log
+  file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
+  #level: debug   #指定级别
+  level:         #指定输出某个类的日志
+    com.cnooc.wordimg.LoggerTest2: debug
+
+spring:
+  application:
+    name: consul-config-client
+  # 注册到Admin管理中心
+  boot:
+    admin:
+      client:
+        url: http://localhost:6010
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: consul-config-client
+        healthCheckPath: ${management.context-path}/health
+        healthCheckInterval: 15s
+      config:
+        # 是否启用配置中心功能
+        enabled: true
+        # 设置配置值的格式
+        format: yaml
+        # 设置配置所在目录
+        prefix: config
+        # 设置配置的分隔符
+        profile-separator: ':'
+        # 配置key的名字，由于Consul是K/V存储，配置存储在对应K的V中
+        data-key: data
+
+
+# Admin 管理配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

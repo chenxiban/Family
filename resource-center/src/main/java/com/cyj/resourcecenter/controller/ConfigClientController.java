@@ -28,6 +28,10 @@ public class ConfigClientController {
     @Value("${config.info}")
     private String configInfo;
 
+    /**
+     * http://localhost:4010/
+     * @return
+     */
     @GetMapping("/configInfo")
     public String getConfigInfo() {
         log.info("configInfo=================>"+configInfo);

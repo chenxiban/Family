@@ -34,7 +34,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        System.out.println("收到的账号" + userName);
+        log.info("收到的账号" + userName);
         User users = usersRepository.findByUserName(userName);
         log.info("用户信息为===>{}",users);
         if (IsEmptyUtils.isEmpty(users)) {

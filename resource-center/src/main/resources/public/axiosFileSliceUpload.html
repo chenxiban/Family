@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Axios分片断点上传文件</title>
+		<!-- vue语法环境 -->
+		<script src="js/vue.min.js"></script>
+		<!-- vue使用Ajax -->
+		<script src="js/element-ui.js"></script>
+		<!-- vue使用element组件 -->
+		<link rel="stylesheet" href="css/element-ui.css" />
+		<!-- vue使用element组件 -->
+		<script src="js/axios.min.js"></script>
+		<style>
+			.el-header,
+			.el-footer {
+				background-color: #B3C0D1;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+
+			.el-main {
+				background-color: #E9EEF3;
+				color: #333;
+				text-align: center;
+				line-height: 160px;
+			}
+
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+
+			.el-container:nth-child(5) .el-aside,
+			.el-container:nth-child(6) .el-aside {
+				line-height: 260px;
+			}
+
+			.el-container:nth-child(7) .el-aside {
+				line-height: 320px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="app">
+			<el-container>
+				<el-header>
+
+				</el-header>
+				<el-main>
+					请选择文件:<input type="file" @change="getFile($event)">
+					<input type="button" value="开始上传" @click="beforeUpload()" />
+				</el-main>
+				<el-footer>
+					<el-progress :percentage=this.prog color="#8e71c7"></el-progress>
+				</el-footer>
+			</el-container>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					sliceurl: "http://localhost:4010/file/sliceUpload", //分片上传URL
+					file: "",
+					desc: "",
+					prog: "0",
+					needSlice: false, //文件是否需要分片上传,大于1M就需要分片上传
+					fileSlice: { //文件对象:其中文件名称,文件总大小,文件在磁盘的最后修改时间,三个条件基本可以作为文件的唯一识别
+						fid: 0, //文件唯一标志
+						point: -1, //文件断点位置,字节位置
+						//slice=1M = 1024 * 1024;js的数组取arr.slice(0,4)
+						sliceSize: 0, //文件每片大小,单位字节;1M = 1024 * 1024 字节,对应js字节数组中的方法arr.slice(2,4) :从第2取到第4,包含2不包含4
+						index: 0, //当前第几片,片的索引从0开始
+						name: "", //文件名称
+						totalSize: 0, //文件总大小,单位字节;对应js中的 file.size 得到文件字节的大小. 1M = 1024 * 1024 字节
+						totalSlice: 0, //总片数
+						lastModified: 0 // JS文件对象的属性,可返回文档最后被修改的日期和时间
+					}
+				},
+				methods: {
+					//文件改变的事件
+					getFile(event) {
+						var other = this;
+						this.file = event.target.files[0];
+						console.log(this.file); //文件对象 是字节数组
+						//File { name: "基于Vue的axios用法示例.rar", lastModified: 1545115549801, webkitRelativePath: "", size: 201599, type: "" }
+						this.fileSlice.name = this.file.name; //文件名称
+						this.fileSlice.totalSize = this.file.size; //文件总大小
+						this.fileSlice.lastModified = this.file.lastModified; //要上传文件的最后修改时间
+						this.needSlice = this.fileSlice.totalSize > (1024 * 1024); //文件大于1M需要分片上传
+						console.log(this.fileSlice); //文件大小,单位字节
+						this.fileSlice.sliceSize = 1 * 1024 * 1024; // 1M = 1 * 1024 * 1024 =1048576 //以1MB为一个分片,每个分片的大小shardSize = 1 * 1024 * 1024,
+						this.fileSlice.totalSlice = Math.ceil(this.fileSlice.totalSize / this.fileSlice.sliceSize); //向上取整,即总片数
+						console.log(`---------------${this.file.size}-----------------`);
+						console.log(`---------------${this.file.slice(1048576,1048576+1048576).size}-----------------`);
+					},
+					//文件分片上传,支持断点续传.
+					axiosFileSliceUpload: function() {
+						var other = this;
+						if(this.needSlice) { //需要分片上传
+							this.fileSlice.sliceSize = 1 * 1024 * 1024; //以1MB为一个分片,每个分片的大小shardSize = 1 * 1024 * 1024,
+							this.fileSlice.totalSlice = Math.ceil(this.fileSlice.totalSize / this.fileSlice.sliceSize); //向上取整,即总片数
+						}
+						//准备上传文件
+						this.$options.methods.beforeUpload(other);
+					},
+					//文件分片上传的准备工作,给服务器发送文件名称,文件大小,文件最后修改时间.以拿取断点位置.准备正式上传
+					beforeUpload: function() {
+						var other = this;
+						if(this.needSlice) { //需要分片上传
+							this.fileSlice.sliceSize = 1 * 1024 * 1024, //以1MB为一个分片,每个分片的大小shardSize = 1 * 1024 * 1024,
+								this.fileSlice.totalSlice = Math.ceil(this.fileSlice.totalSize / this.fileSlice.sliceSize); //向上取整,即总片数
+						}
+						mydata = this.fileSlice; //虚拟dom中的文件信息对象
+						console.log(mydata);
+						console.log("发起一个POST请求准备上传文件" + JSON.stringify(mydata));
+						// 发起一个POST请求
+						axios({
+								method: 'post',
+								url: 'http://localhost:3011/chenyongjia-file/FileManagement/file/beforeUpload',
+								data: mydata
+							})
+							.then(function(response) {
+								console.log(vm.fileSlice);
+								console.log(other.fileSlice);
+								console.log(response);
+								console.log(response.data);
+								if(true || response.data.slice == 1) {
+									var fileSlice = response.data.fileSlice; //服务器响应的文件传输记录
+									vm.fileSlice = fileSlice; //服务器响应的文件传输记录
+									console.log(`beforeUpload服务器响应的文件传输记录${JSON.stringify(other.fileSlice)}`);
+								}
+							})
+							.catch(function(error) {
+								console.log(error);
+							});
+					},
+					//文件分片上传 fid 唯一标志,point断点,slice每片容量
+					sliceUpload: function(fid, slice) {
+						console.log(`文件分片传输方法执行`);
+						var formData = new FormData(); //表单数据对象
+						formData.append("myfile", slice); //文件
+						formData.append("fid", fid); //文件描述信息
+						// 发起一个POST请求
+						axios({
+								method: 'post', //默认get
+								url: 'http://localhost:3011/chenyongjia-file/FileManagement/file/sliceUpload',
+								data: formData,
+								headers: {
+									"Content-Type": "multipart/form-data"
+								}
+							})
+							.then(function(response) {
+								console.log(response);
+								console.log(response.data);
+								var fileSlice = response.data.fileSlice; //服务器响应的文件传输记录
+								vm.fileSlice = fileSlice; //服务器响应的文件传输记录
+								console.log(`分片传输服务器响应的文件传输记录${JSON.stringify(vm.fileSlice)}`);
+							})
+							.catch(function(error) {
+								console.log(error);
+							});
+					},
+					//文件分片传输完毕!!!
+					sliceUploadOver: function(that) {
+						//准备上传文件
+						mydata = that.fileSlice; //虚拟dom中的文件信息对象
+						console.log(mydata);
+						console.log("发起一个POST请求准备上传文件" + JSON.stringify(mydata));
+						// 发起一个POST请求
+						axios({
+								method: 'post',
+								url: 'http://localhost:3011/chenyongjia-file/FileManagement/file/sliceUploadOver',
+								data: mydata
+							})
+							.then(function(response) {
+								console.log(vm.fileSlice);
+								console.log(response);
+								console.log(response.data);
+								if(true || response.data.slice == 1) {
+									var fileSlice = response.data.fileSlice; //服务器响应的文件传输记录
+									vm.fileSlice = fileSlice; //服务器响应的文件传输记录
+									console.log(`分片上传完成之后服务器响应的文件传输记录${JSON.stringify(vm.fileSlice)}`);
+								}
+							})
+							.catch(function(error) {
+								console.log(error);
+							});
+					}
+				},
+				watch: {
+					"fileSlice.point": function(nval, oval) {
+						var that = this;
+						console.log(`文件断点值被修改了 nval=${nval},oval=${oval}`);
+						if(that.fileSlice.point < that.fileSlice.totalSize) { //如果断点位置小于文件大小,则继续续传文件字节数据
+							console.log("文件断点值被修改了,断点续传.");
+							//百分比进度条
+							that.prog = Math.round(that.fileSlice.point / that.file.size * 10000) / 100;
+							console.log(`---------------${that.prog}-----------------`);
+							var fid = that.fileSlice.fid;
+							var filePoint = that.fileSlice.point; //文件断点位置
+							var fileSliceSize = that.fileSlice.sliceSize; //每片文件大小
+							console.log(`${that.file.size}开始切片从${filePoint}截取到${filePoint+fileSliceSize}`);
+							var slice = that.file.slice(filePoint, filePoint + fileSliceSize); //从断点位置截取一片文件大小的字节数据
+							console.log(`开始断点${filePoint}续传${slice.size}字节`);
+							this.$options.methods.sliceUpload(fid, slice);
+						} else { //断点位置等于文件大小.说明文件上传完毕
+							console.log("文件断点值被修改了,续传文件上传完毕.");
+							that.prog = 100;
+							this.$options.methods.sliceUploadOver(that);
+						}
+					}
+				}
+
+			});
+		</script>
+
+	</body>
+
+</html>

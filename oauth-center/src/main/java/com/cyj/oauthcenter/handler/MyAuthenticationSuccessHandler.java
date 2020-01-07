@@ -30,7 +30,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth)
             throws IOException, ServletException {
-        System.out.println("用户登陆成功");
+        log.info("用户登陆成功");
         res.sendRedirect("about");
     }
 

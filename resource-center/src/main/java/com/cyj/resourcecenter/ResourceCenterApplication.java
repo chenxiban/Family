@@ -1,11 +1,11 @@
 package com.cyj.resourcecenter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
-import org.springframework.cloud.netflix.turbine.EnableTurbine;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @author ChenYongJia
@@ -15,8 +15,8 @@ import org.springframework.cloud.netflix.turbine.EnableTurbine;
  * @Email chen87647213@163.com
  */
 @Slf4j
-@EnableTurbine
-@EnableHystrixDashboard
+@EnableFeignClients
+@MapperScan("com.cyj.resourcecenter.dao")
 @EnableEurekaClient
 @SpringBootApplication
 public class ResourceCenterApplication {

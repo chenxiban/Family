@@ -61,7 +61,7 @@ eureka:
       #defaultZone: http://backup:8889/eureka/,http://slave:8890/eureka/
   server:
     # 关闭自我保护机制，防止失效的服务也被一直访问 (Spring Cloud默认该配置是 true)
-    enable-self-preservation: false
+    enable-self-preservation: true
     # 每隔10s扫描服务列表，该配置可以修改检查失效服务的时间，每隔10s检查失效服务，并移除列表 (Spring Cloud默认该配置是 60s)
     eviction-interval-timer-in-ms: 5000
 

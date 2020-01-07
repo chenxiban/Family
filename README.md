@@ -36,6 +36,7 @@
 - **resource-center（待完工）**
 - **oauth-center（待完工）**
 - **rabbitmq-center**
+- **family-admin**
 - **后续还会加入项目**
 
 -----------------------
@@ -50,6 +51,7 @@
     |-- resource-center              资源中心（包含hystrix-dashboard监控）
     |-- oauth-center                 单点登录
     |-- rabbitmq-center              消息队列
+    |-- family-admin                 家庭生态圈管理系统
     |-- 后续还会加入项目
 ```
 

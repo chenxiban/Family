@@ -39,6 +39,66 @@ spring:
     name: resource-center
   profiles:
     active: master
+  datasource:
+    #数据库意思是:机构权限文件
+    url: jdbc:mysql://121.199.78.252:3306/resourcecenter?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: 867647wW!
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #初始化大小
+      initialSize: 10
+      #最小值
+      minIdle: 5
+      #最大值
+      maxActive: 20
+      #最大等待时间，配置获取连接等待超时，时间单位都是毫秒ms
+      maxWait: 60000
+      #配置间隔多久才进行一次检测，检测需要关闭的空闲连接
+      timeBetweenEvictionRunsMillis: 60000
+      #配置一个连接在池中最小生存的时间
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙，SpringBoot中没有slf4j，我改成了slf4j
+      filters: stat,wall,slf4j
+      #最大PSCache连接
+      maxPoolPreparedStatementPerConnectionSize: 20
+      max-evictable-idle-time-millis: 900000
+      useGlobalDataSourceStat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 配置StatFilter
+      web-stat-filter:
+        #默认为false，设置为true启动
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        #配置StatViewServlet
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        #允许那些ip
+        allow: 127.0.0.1
+        login-username: admin
+        login-password: 123456
+        #禁止那些ip
+        deny: 192.168.1.102
+        #是否可以重置
+        reset-enable: true
+        #启用
+        enabled: true
+  # SpringDateJpa 配置自动建表：updata:没有表新建，有表更新操作,控制台显示建表语句
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect  #不加这句则默认为myisam引擎
+    ##运行时输出jpa执行的sql语句
+    show-sql: true
+    ## spring-boot-starter-data-jpa自动映射创建表动作 配置: 有表更新,无表创建
+    hibernate:
+      ddl-auto: update
   cloud:
     # config客户端配置
     config:
@@ -82,6 +142,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     # 时区设置
     time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+cbs:
+  imagesPath: file:/G:/fileUpload/
 
 hystrix:
   metrics:
@@ -109,11 +176,3 @@ logging:
 #      userAuthorizationUri: http://localhost:3010/serve-oauth/oauth/authorize
 #      clientId: client_1
 #      clientSecret: 123456
-
-turbine:
-  # 指定需要收集信息的服务名称
-  app-config: hystrix-service
-  # 指定服务所属集群
-  cluster-name-expression: new String('default')
-  # 以主机名和端口号区分服务
-  combine-host-port: true

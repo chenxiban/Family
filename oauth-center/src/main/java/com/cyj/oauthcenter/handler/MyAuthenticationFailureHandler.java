@@ -32,7 +32,7 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException auth)
 			throws IOException, ServletException {
-		System.out.println("用户认证失败");
+		log.info("用户认证失败");
 		res.sendRedirect("https://blog.csdn.net/Mrs_chens");
 	}
 

@@ -24,7 +24,7 @@ public class PostGatewayFilterFactory extends AbstractGatewayFilterFactory<PostG
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 Long startTime = exchange.getAttribute("requestTime");
                 long time = System.currentTimeMillis() - startTime;
-                System.out.println("接口耗时时间（ms）：" + time);
+                log.info("接口耗时时间（ms）：" + time);
             }));
         };
     }

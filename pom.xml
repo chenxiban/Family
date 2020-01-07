@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.2.2.RELEASE</version>
         <relativePath/>
     </parent>
     <groupId>com.cyj</groupId>
@@ -80,6 +80,8 @@
 
     <modules>
         <module>eureka-center</module>
+        <module>consul-center</module>
+        <module>consul-config</module>
         <module>gateway-center</module>
         <module>oauth-center</module>
         <module>admin-center</module>

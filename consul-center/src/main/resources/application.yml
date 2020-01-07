@@ -1,0 +1,45 @@
+server:
+  #项目端口号
+  port: 8889
+  tomcat:
+    max-connections: 200
+    max-threads: 300
+    min-spare-threads: 0
+    uri-encoding: UTF-8
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  #path: D:\Logback-Test\             #日志输出到指定文件夹下默认名为spring.log
+  file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
+  #level: debug   #指定级别
+  level:         #指定输出某个类的日志
+    com.cnooc.wordimg.LoggerTest2: debug
+
+spring:
+  application:
+    name: consul-server
+  # 注册到Admin管理中心
+  boot:
+    admin:
+      client:
+        url: http://localhost:6010
+  cloud:
+    consul:
+      # 将服务注册到consul
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        healthCheckPath: ${management.context-path}/health
+        healthCheckInterval: 15s
+
+# Admin 管理配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
