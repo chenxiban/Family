@@ -14,7 +14,7 @@ logging:
   file: D:\Logback-Test\wordimg.log  #日志输出到指定文件
   #level: debug   #指定级别
   level:         #指定输出某个类的日志
-    com.cnooc.wordimg.LoggerTest2: debug
+    com.cyj.wordimg.LoggerTest2: debug
 
 spring:
   application:
